@@ -8,14 +8,14 @@ function NavBar() {
       <div className="m-auto text-center  relative">
         <h1 className="text-lg font-bold text-left ">Create Flashcard</h1>
         <ul className="flex flex-row space-x-11 my-3 mx-1 text-gray-500 font-bold text-text-base  ">
-          <li className="navlinks hover:text-red-500 hover:border-b-4 hover:border-red-500">
+          <li className="navlinks hover:text-red-500">
              Create New
           </li>
-          <li className="navlinks  hover:text-red-500 hover:border-b-4 hover:border-red-500">
+          <li className="navlinks  hover:text-red-500">
              My Flashcard
           </li>
         </ul>
-        <hr className=" border-1 border-gray-400  -my-[8px]" />
+        <hr className="border-1 border-gray-400 -my-[13.5px] " />
       </div>
     </div>
   );

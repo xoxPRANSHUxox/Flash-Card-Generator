@@ -1,19 +1,41 @@
 import React from 'react'
 import { MdOutlineUploadFile } from "react-icons/md";
+import { toast } from 'react-toastify';
+import validateImage from '../../../Validation/ValidateImage';
+
 export default function CreateGroup() {
   return (
     <div>
-      <section className="w-4/5 bg-white h-2/5 flex flex-col flex-wrap items-center justify-center shadow m-auto my-4 overflow-hidden">
+      <section className="w-4/5 bg-white h-2/5 flex flex-col flex-wrap shadow m-auto my-4 overflow-hidden">
         <p className="mt-4 mx-8">Create Group*</p>
         <div className=" mx-8 w-full flex">
           <input
             type="text"
-            placeholder=""
-            className=" border h-8 w-2/6 mt-2"
+            placeholder="Group Name"
+            className=" border h-8 w-2/6 mt-2 px-4"
           />
-          <button class="w-fit h-8 bg-white hover:bg-blue-100 text-blue-800 mx-6 my-2 py-1 px-4 border border-gray-400 rounded shadow flex flex-row overflow-hidden ">
-            <MdOutlineUploadFile className="mx-2 mt-1" /> Upload Image
-          </button>
+          <span class="w-fit h-8 bg-white hover:bg-blue-100 text-blue-800 mx-6 my-2 py-1 px-4 border border-gray-400 rounded shadow flex flex-row overflow-hidden cursor-pointer">
+            <MdOutlineUploadFile className="mx-1 mt-1" /> Upload Image
+          </span>
+
+          {/* Its an input field for Iamge upload */}
+          
+          <input type="file" className='hidden' id='groupImage' 
+          onClick={(event) => (event.target.value=null)}
+          onChange={(event) => {
+
+            event.preventDefault();
+
+            if (event.target.files[0] && !validateImage.includes(event.target.files[0].type)){
+              toast.warning("Please Upload in Image format !")
+            }
+            else{}
+            
+
+          }}/>
+
+
+
         </div>
 
         <div className="mt-4 mx-8 w-full">
@@ -21,42 +43,11 @@ export default function CreateGroup() {
           <br />
           <input
             type="text"
-            placeholder="hello"
-            className=" border mb-4 h-24 p-4 w-4/6 mt-2 "
+            placeholder="Group Description"
+            className=" border mb-4 h-24 w-4/6 mt-2 px-4 text-wrap over"
           />
         </div>
       </section>
-
-      {/* Second Component starts from here */}
-      <section className="w-4/5 bg-white h-2/5 shadow m-auto my-4 overflow-hidden">
-        
-        <div className=" w-full flex flex-row items-center justify-center flex-wrap">
-          
-          {/* Counting starts from here*/}
-          <div className="w-7 h-7  bg-red-600 rounded-full text-lg text-center text-white ml-8">
-          1
-          </div>
-
-          <div className="mx-8 w-2/6">
-             <p className=" mt-4">Enter Term*</p>
-             <input type="text" className="border w-full h-8" />
-          </div>
-
-          <div className="w-2/6">
-             <p className="mt-4">Enter Defination*</p>
-             <input type="text" className="border w-full h-8" />
-          </div>
-           
-          <button class=" w-fit text-wrap h-8 bg-white hover:bg-blue-100 text-blue-800 mx-6 mt-10 py-1 px-4 border border-gray-400 rounded shadow overflow-hidden">
-           Select Image
-          </button>
-        </div>
-
-        <button class="h-8 bg-white text-blue-800 ml-16 my-6 py-1 px-4 ">
-           + Add More 
-        </button>
-      </section>
-
 
     </div>
   )
