@@ -1,10 +1,14 @@
 import './App.css';
-import CreateNew from './Components/CreateNewSection/CreateNew';
+import CreateFlashCard from './pages/CreateFlashCard';
+import NavBar from './Components/NavBar';
+import LogoBar from './Components/LogoBar';
 
 function App() {
   return (
     <div className="App">
-      <CreateNew/>
+      <LogoBar/>
+      <NavBar/>
+      <CreateFlashCard/>
     </div>
   );
 }

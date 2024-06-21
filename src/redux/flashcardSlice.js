@@ -1,15 +1,5 @@
-
-const storedFlashCards = JSON.parse(localStorage.getItem("flashcards"));
+const storedFlashcards = JSON.parse(localStorage.getItem("flashcards"));
 
 const initialState = {
-    formData: {
-        groupname:"",
-        groupImage:"",
-        groupDescription:"",
-        term:[
-            {
-                termName
-            }
-        ]
-    }
+    FormData:{ }
 }
