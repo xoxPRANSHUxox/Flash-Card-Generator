@@ -1,10 +1,8 @@
 export const TYPE = {
-    CREATEFINALCARD:'CREATEFINALCARD',
-    CREATEGROUP:'CREATEGROUP',
-    CREATECARDS:'CREATECARDS'
+    ADDFLASHCARD:'ADDFLASHCARD'
 }
 
-export const createGroup = (group) => ({
-    type: TYPE.CREATEGROUP,
-    payload: group,
+export const addFlashCard = (flashcards) => ({
+    type: TYPE.ADDFLASHCARD,
+    payload: flashcards,
 })
