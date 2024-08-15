@@ -4,15 +4,7 @@ import { TYPE } from "./Action";
 const storedFlashcards = JSON.parse(localStorage.getItem("flashcards"));
 
 const initialState = {
-    groupName: "",
-    groupImage: "",
-    groupDescription: "",
-    cards: [{
-        term: "",
-        definition: "",
-        cardImage: ""
-    }],
-    flashcards: storedFlashcards || [],
+    flashcards: storedFlashcards || [], // Ensure flashcards is initialized as an array
 };
 
 export const reducer = (state = initialState, action) => {
@@ -25,11 +17,7 @@ export const reducer = (state = initialState, action) => {
 
             return {
                 ...state,
-                flashcards: updatedFlashcards,
-                groupName: action.payload.groupName,
-                groupImage: action.payload.groupImage,
-                groupDescription: action.payload.description,
-                cards: action.payload.cards,
+                flashcards: updatedFlashcards, // Ensure flashcards is updated properly
             };
 
         default:
