@@ -10,7 +10,6 @@ import { addFlashCard } from "../Redux/Action";
 import CancelIcon from '@mui/icons-material/Cancel';
 function CreateGroup() {
   // All the states are here
-  const [group, setGroup] = useState([]);
   const [cards, setCards] = useState([
     { term: "", definition: "", image: null },
   ]);
@@ -103,7 +102,7 @@ function CreateGroup() {
     );
 
     // Check if groupName, description, or groupImage are empty
-    const isGroupValid = groupName.trim() !== "" && description.trim() !== "" && groupImage !== null;
+    const isGroupValid = groupName.trim() !== "" && description.trim() !== "";
 
     // Only proceed if the group is valid and there are valid cards
     if (isGroupValid && filteredCards.length > 0) {

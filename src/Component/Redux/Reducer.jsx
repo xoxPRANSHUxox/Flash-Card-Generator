@@ -15,11 +15,26 @@ export const reducer = (state = initialState, action) => {
             // Store updated flashcards in localStorage
             localStorage.setItem("flashcards", JSON.stringify(updatedFlashcards));
 
+            // console.log("Updated State:", { ...state, flashcards: updatedFlashcards });
+            // Remove comment from above line if you want to see the updated state
+
             return {
                 ...state,
                 flashcards: updatedFlashcards, // Ensure flashcards is updated properly
             };
-
+        
+            case TYPE.DELETEFLASHCARD:
+                // Ensure only the flashcard at the given index is removed
+                const filteredFlashcards = state.flashcards.filter((_, idx) => idx !== action.payload);
+            
+                // Store updated flashcards in localStorage
+                localStorage.setItem("flashcards", JSON.stringify(filteredFlashcards));
+            
+                return {
+                    ...state,
+                    flashcards: filteredFlashcards,
+                };
+                
         default:
             return state;
     }
