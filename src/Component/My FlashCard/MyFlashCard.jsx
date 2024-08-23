@@ -6,10 +6,13 @@ import noFlashCard from '../../assets/no.png';
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import groupImageAlternate from '../../assets/groupIamgeAlternate.png';
+import { useNavigate } from 'react-router-dom';
+
 
 function MyFlashCard() {
   const flashcards = useSelector((state) => state.flashcardState.flashcards);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [selectedCardIndex, setSelectedCardIndex] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -29,19 +32,22 @@ function MyFlashCard() {
     setIsModalOpen(false);
   };
 
+  
+
   if (!flashcards || flashcards.length === 0) {
     return (
-      <div className='flex flex-col w-screen h-fit justify-center items-center'>
+      <div className='flex flex-col w-screen justify-center items-center'>
         <ToastContainer />
-        <img src={noFlashCard} alt="No flash card" className='w-2/5 h-auto mt-8 rounded-lg shadow-lg' />
+        <img src={noFlashCard} alt="No flash card" className='m-4 min-w-2/5 max-w-4/5 min-h-[10rem] max-h-[50vh] mt-8 rounded-lg shadow-lg' />
         <p className='text-red-500 text-2xl font-bold mt-4'>Create New Cards</p>
       </div>
     );
   }
 
-  const showCardInfo = (e) => {
-    // Implement your logic for showing card info here
-  }
+  const ViewCards = (index) => {
+    navigate(`/ViewCards/${index}`);
+  };
+  
 
   return (
     <>
@@ -60,9 +66,10 @@ function MyFlashCard() {
             />
             <div className='flex flex-col justify-center items-center'>
               <img src={card.groupImage || groupImageAlternate} alt="Group" className='w-[120px] h-[120px] rounded-full mb-4 border-4 border-gray-200' />
-              <h3 className='text-lg font-semibold mb-2 text-gray-700'>Group Name: {card.groupName}</h3>
+              <h3 className='text-lg font-semibold mb-2 text-gray-700'>{card.groupName}</h3>
               <p className='text-gray-500 text-center mb-4'>{card.description}</p>
-              <button onClick={showCardInfo} className='px-4 py-2 font-semibold text-white bg-blue-500 hover:bg-blue-700 rounded-full shadow-md transition duration-200'>
+              <p className='text-center mb-4'>{card.cards.length} Cards</p>
+              <button onClick={() => ViewCards(index)} className='px-4 py-2 font-semibold text-white bg-blue-500 hover:bg-blue-700 rounded-full shadow-md transition duration-200'>
                 View Cards
               </button>
             </div>
