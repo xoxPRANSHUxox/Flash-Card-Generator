@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState,useEffect  } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
@@ -9,11 +9,13 @@ import { useDispatch } from "react-redux";
 import { addFlashCard } from "../Redux/Action";
 import CancelIcon from '@mui/icons-material/Cancel';
 function CreateGroup() {
+
   // All the states are here
   const [cards, setCards] = useState([
     { term: "", definition: "", image: null },
   ]);
   const [groupImage, setGroupImage] = useState(null);
+
 
   //  *****************************REFERENCES ARE HERE*********************************************************//
 
@@ -28,15 +30,44 @@ function CreateGroup() {
 
   //HANDLER FOR GROUP IMAGE//
 
-  const handleGroupImage = (e) => {
+  const fileToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+    });
+};
+
+const handleGroupImage = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      const fileURL = URL.createObjectURL(file);
-      setGroupImage(fileURL);
-      toast.success("Group Image is uploaded");
+        const base64Image = await fileToBase64(file);
+        localStorage.setItem("groupImage", base64Image);
+        setGroupImage(base64Image);
+        toast.success("Group Image is uploaded");
     }
-  };
+};
 
+// HANDLE IMAGE OF CARD AT EACH INDEX
+
+const handleImage = (e, index) => {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      const base64String = reader.result;
+      const newCards = [...formik.values.cards];
+      newCards[index].image = base64String;
+      formik.setFieldValue("cards", newCards);
+    };
+
+    reader.readAsDataURL(file); // Convert file to Base64 string
+  }
+};
+
+  
   //HANDLE TO DELETE A GROUP IMAGE
 
   const deleteGroupImage = () => {
@@ -53,17 +84,6 @@ function CreateGroup() {
     formik.setFieldValue("cards", newCards);
   };
 
-  // HANDLE IMAGE OF CARD AT EACH INDEX
-
-  const handleImage = (e, index) => {
-    const file = e.target.files[0];
-    if (file) {
-      const fileURL = URL.createObjectURL(file);
-      const newCards = [...formik.values.cards];
-      newCards[index].image = fileURL;
-      formik.setFieldValue("cards", newCards);
-    }
-  };
 
   // HANLDER FOR DELETING A TERM IMAGE AT EACH INDEX
 
@@ -74,15 +94,21 @@ function CreateGroup() {
   };
 
   // HANDLE FOR ADD MORE CARDS
-
   const addMoreCard = (e) => {
     e.preventDefault();
     const newCard = { term: "", definition: "", image: null };
     const updatedCards = [...formik.values.cards, newCard];
-    formik.setFieldValue("cards", updatedCards);
+    
+    // Update the entire form values to keep groupName and description intact
+    formik.setValues({
+        ...formik.values, // keep other form values (groupName, description)
+        cards: updatedCards, // update the cards
+    });
+
     setCards(updatedCards);
     toast.success("Term card is added");
-  };
+};
+  
 
   // HANDLER FOR DELETING A CARD
 
@@ -114,7 +140,7 @@ function CreateGroup() {
         };
 
         console.log("Submitting values:", values); // Debugging
-
+        setGroupImage(null);
         dispatch(addFlashCard(values));
         toast.success("FlashCard Created Successfully");
     } else {
@@ -142,20 +168,33 @@ function CreateGroup() {
         .min(3, "Group name must have more than 2 characters")
         .max(20, "Group name must be between 3-20 characters")
         .required("Required"),
-      description: Yup.string().required("Required"),
+
+      description: Yup.string()
+      .min(5, "Group Description must have more than 5 characters")
+      .max(20, "Group Description  must be between 3-20 characters")
+      .required("Required"),
 
       cards: Yup.array().of(
         Yup.object().shape({
           term: Yup.string()
             .min(3, "Term must have more than 2 characters")
-            .max(20, "Term must be between 3-20 characters")
             .required("Term is Required"),
-          definition: Yup.string().required("Definition is Required"),
+          definition: Yup.string()
+          .min(5, "Definition must have minimum 5 characters")
+          .required("Definition is Required"),
         })
       ),
     }),
     enableReinitialize: true,
   });
+
+  useEffect(() => {
+    formik.setValues({
+        groupName: formik.values.groupName || "",
+        description: formik.values.description || "",
+        cards: cards, // Use the local state of cards
+    });
+  }, [cards, formik.values.groupName, formik.values.description]);
 
   //  ***************************************** function return ***********************************************//
 
@@ -260,13 +299,13 @@ function CreateGroup() {
           className="w-auto mx-[1rem] sm:mx-[5rem] my-4 h-auto border-[0.2rem] border-[#CE5A67] rounded-2xl"
         >
           {formik.values.cards.map((card, index) => (
-            <div key={index}>
-              <div className="flex flex-wrap justify-start items-center w-full my-8 sm:flex-row sm:justify-center sm:mx-0 mx-4">
-                <span className="w-[4vw] h-10 bg-[#ce5a67] flex justify-center items-center mx-12 rounded-full text-white text-xl font-bold">
+            <div key={index} className="flex flex-wrap">
+              <div className="flex flex-wrap justify-start items-center w-full my-8 md:flex-row flex-col sm:justify-center sm:mx-0 mx-4">
+                <span className="w-[4vw] h-10 bg-[#ce5a67] flex justify-center items-center md:mx-12 m-4 rounded-full text-white text-xl font-bold">
                   {index + 1}
                 </span>
 
-                <div className="flex flex-row">
+                <div className="flex flex-row md:mt-4 my-4">
                   <label
                     htmlFor={`enterTerm-${index}`}
                     className="font-semibold text-lg text-[#1F1717] my-2"
