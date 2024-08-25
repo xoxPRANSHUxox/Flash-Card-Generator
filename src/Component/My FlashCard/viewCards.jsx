@@ -98,12 +98,12 @@ function ViewCard() {
         />
 
         {/* Pdf Download Modal */}
+
         <PdfDownloadModal 
          isOpen={isDownloadModalOpen} 
-          onClose={() => setIsDownloadModalOpen(false)} 
-          cards={flashcards} 
-/>
-
+         onClose={() => setIsDownloadModalOpen(false)} 
+         card={card} 
+       />
       </div>   
     </>
   );

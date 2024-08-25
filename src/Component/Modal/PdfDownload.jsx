@@ -3,27 +3,41 @@ import React from 'react';
 import { Close } from '@mui/icons-material';
 import { jsPDF } from 'jspdf';
 
-const PdfDownloadModal = ({ isOpen, onClose, cards }) => {
+const PdfDownloadModal = ({ isOpen, onClose, card }) => {
   if (!isOpen) return null;
 
   const handleDownload = () => {
     const doc = new jsPDF();
+    const pageHeight = doc.internal.pageSize.height;
+
+    // Add Group Name and Description
+    doc.setFontSize(20);
+    doc.text(card.groupName, 10, 20);
+    if (card.groupImage) {
+      doc.addImage(card.groupImage, 'JPEG', 10, 40, 50, 50); // Adjust image size and position as needed
+    }
+    doc.setFontSize(14);
+    doc.text(card.description, 10, 30);
 
     // Loop through each card and add it to the PDF
-    cards.forEach((card, index) => {
-      doc.setFontSize(16);
-      doc.text(`Term: ${card.term}`, 10, 10 + (index * 30));
-      doc.setFontSize(12);
-      doc.text(`Definition: ${card.defincition}`, 10, 20 + (index * 30));
-      
-      // If not the last card, add a new page
-      if (index !== cards.length - 1) {
+    card.cards.forEach((card, index) => {
+      const cardOffset = 90 + index * 70; // Adjust vertical offset for each card
+
+      if (cardOffset + 60 > pageHeight) {
         doc.addPage();
       }
-    });
 
-    // Save the generated PDF
-    doc.save('flashcards.pdf');
+      doc.setFontSize(16);
+      doc.text(`Term: ${card.term}`, 10, cardOffset+20);
+      if (card.image) {
+            doc.addImage(card.image, 'JPEG', 10, cardOffset + 20, 40, 40); 
+        }
+      doc.setFontSize(12);
+      doc.text(`Definition: ${card.definition}`, 10, cardOffset + 10);
+    });
+      
+     
+    doc.save(`${card.groupName}_flashcards.pdf`);
   };
 
   return (
