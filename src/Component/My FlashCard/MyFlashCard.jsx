@@ -44,8 +44,8 @@ function MyFlashCard() {
     );
   }
 
-  const ViewCards = (index) => {
-    navigate(`/ViewCards/${index}`);
+  const ViewCard = (index) => {
+    navigate(`/ViewCard/${index}`);
   };
   
 
@@ -69,7 +69,7 @@ function MyFlashCard() {
               <h3 className='text-lg font-semibold mb-2 text-gray-700'>{card.groupName}</h3>
               <p className='text-gray-500 text-center mb-4'>{card.description}</p>
               <p className='text-center mb-4'>{card.cards.length} Cards</p>
-              <button onClick={() => ViewCards(index)} className='px-4 py-2 font-semibold text-white bg-blue-500 hover:bg-blue-700 rounded-full shadow-md transition duration-200'>
+              <button onClick={() => ViewCard(index)} className='px-4 py-2 font-semibold text-white bg-blue-500 hover:bg-blue-700 rounded-full shadow-md transition duration-200'>
                 View Cards
               </button>
             </div>
