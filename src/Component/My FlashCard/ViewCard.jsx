@@ -49,23 +49,23 @@ function ViewCard() {
           <p className='font-serif text-lg font-semibold mx-12 mt-2'>{card.description}</p>
         </div>
 
-        <div className="flex md:flex-row items-center p-8 w-full flex-col">
+        <div className="flex lg:flex-row items-center p-8 w-full flex-col">
           {/* FlashCard and image rendering */}
-          <div className='md:w-[20vw] w-[80vw]  md:h-[50vh] h-auto bg-white shadow-xl m-4 p-4 text-wrap text-center'>
+          <div className='lg:w-[20vw] w-[80vw]  lg:h-[50vh] h-auto bg-white shadow-xl m-4 p-4 text-wrap text-center'>
             <p className='border-b-2 text-lg font-semibold'>FlashCards</p> 
             <h2 className="text-lg text-red-500 my-4">{card.cards[count].term}</h2>
           </div>
           
-          <div className='md:w-[50vw] w-[80vw] md:h-[50vh] h-auto flex flex-row text-wrap bg-white shadow-xl p-4 justify-center mt-4'>
+          <div className='lg:w-[50vw] w-[80vw] lg:h-[50vh] h-auto flex flex-row text-wrap bg-white shadow-xl p-4 justify-center mt-4'>
             <img 
               src={card.cards[count].image ? card.cards[count].image : profile} 
               alt={card.cards[count].term}
-              className="min-w-[5rem] min-h-[5rem] max-w-[20rem] max-h-[20rem] mb-4 mt-8"
+              className="lg:h-[40vh] h-[20vh] mb-4 mt-8 w-[15vw]"
             />
-            <p className="text-lg ml-4 mt-12">{card.cards[count].definition}</p>
+            <p className="lg:text-md text:sm ml-4 mt-12 text-wrap  overflow-hidden">{card.cards[count].definition}</p>
           </div>   
 
-          <div className='mt-4 md:w-[25vw] w-[80vw] md:h-[50vh] h-auto flex flex-col text-wrap bg-white shadow-xl p-4 mx-4'>
+          <div className='mt-4 lg:w-[25vw] w-[80vw] lg:h-[50vh] h-auto flex flex-col text-wrap bg-white shadow-xl p-4 mx-4'>
             <button 
               onClick={() => setIsShareModalOpen(true)} 
               className='px-4 my-2 mx-4 py-1 font-semibold text-lg hover:text-[#EEF7FF] rounded-lg shadow hover:bg-[#CE5A67] border border-[#1F1717] text-[#1F1717]'>
